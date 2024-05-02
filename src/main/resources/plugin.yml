@@ -1,0 +1,10 @@
+name: ToggleHardcore
+version: '${version}'
+authors: [Allison]
+main: tech.allydoes.togglehardcore.ToggleHardcore
+api-version: '1.20'
+commands:
+  toggleHardcore:
+    description: Toggle hardcore mode
+    usage: /toggleHardcore
+    permission: ToggleHardcore.toggleHardcore
