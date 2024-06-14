@@ -17,7 +17,7 @@ public class OnPlayerJoin implements Listener {
         Player player = event.getPlayer();
 
         NamespacedKey key = new NamespacedKey(ToggleHardcore.getPlugin(), "isHardcore");
-        boolean isHardcore = player.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN);
+        boolean isHardcore = Boolean.TRUE.equals(player.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN));
 
         if (isHardcore) {
             player.setResourcePack("https://dl.dropboxusercontent.com/scl/fi/fzh1w48rg3xjrgwqox9dw/HardcoreHearts.zip?rlkey=dnusltejyys21x89yfmxgy4c4&st=sgvdzey6&dl=0",

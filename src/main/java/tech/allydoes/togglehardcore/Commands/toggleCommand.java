@@ -23,7 +23,7 @@ public class toggleCommand implements CommandExecutor {
         Player player = (Player) sender;
         boolean isHardcore = false;
         if (player.getPersistentDataContainer().has(key)) {
-            isHardcore = player.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN);
+            isHardcore = Boolean.TRUE.equals(player.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN));
         }
 
         if (isHardcore) {

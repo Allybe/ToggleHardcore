@@ -17,7 +17,7 @@ public class OnPlayerDeath implements Listener {
         Player player = event.getEntity();
 
         NamespacedKey key = new NamespacedKey(ToggleHardcore.getPlugin(), "isHardcore");
-        boolean isHardcore = player.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN);
+        boolean isHardcore = Boolean.TRUE.equals(player.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN));
 
         if (isHardcore) {
             Calendar calendar = Calendar.getInstance();
