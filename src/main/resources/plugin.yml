@@ -8,3 +8,7 @@ commands:
     description: Toggle hardcore mode
     usage: /toggleHardcore
     permission: ToggleHardcore.toggleHardcore
+  hardcore:
+    description: Admin command for managing players' hardcore mode
+    usage: /hardcore
+    permission: ToggleHardcore.admin
