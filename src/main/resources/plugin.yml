@@ -2,7 +2,7 @@ name: ToggleHardcore
 version: '${version}'
 authors: [Allison]
 main: tech.allydoes.togglehardcore.ToggleHardcore
-api-version: '1.20'
+api-version: '1.21'
 commands:
   toggleHardcore:
     description: Toggle hardcore mode
