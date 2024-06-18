@@ -36,6 +36,9 @@ public class AdminCommand implements CommandExecutor {
 
         boolean hardcoreStatus = ToggleHardcore.CheckHardcoreStatus(targetPlayer);
         ToggleHardcore.SetHardcoreStatus(targetPlayer, !hardcoreStatus);
+
+        targetPlayer.removeResourcePacks();
+        commandSender.sendMessage(playerName + "'s hardcore status was set to: " + hardcoreStatus);
     }
 
     public void sendHardcoreStatus(CommandSender commandSender, String playerName) {
