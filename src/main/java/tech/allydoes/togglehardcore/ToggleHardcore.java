@@ -28,7 +28,7 @@ public final class ToggleHardcore extends JavaPlugin {
         this.getCommand("dayCounter").setExecutor(new DayCounterCommand());
 
         if (getServer().isHardcore()) {
-            this.getLogger().log(Level.WARNING, "Your server is set to hardcore! Please set 'hardcore' in 'server.properties to properly use this.'");
+            this.getLogger().log(Level.SEVERE, "Your server is set to hardcore! Please set 'hardcore' in 'server.properties' to 'true' for ToggleHardcore to work properly.");
         }
 
         getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);

@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import tech.allydoes.togglehardcore.Text.MessageBuilder;
 import tech.allydoes.togglehardcore.ToggleHardcore;
 
 public class AdminCommand implements CommandExecutor {
@@ -19,7 +20,7 @@ public class AdminCommand implements CommandExecutor {
                     sendHardcoreStatus(commandSender, args[1]);
                     break;
                  default:
-                     commandSender.sendMessage("Invalid arguments");
+                     commandSender.sendMessage(MessageBuilder.getMessage("This player doesn't exist", MessageBuilder.MessageLevel.WARNING));
                     break;
             }
         }
@@ -30,24 +31,24 @@ public class AdminCommand implements CommandExecutor {
     private void toggleHardcore(CommandSender commandSender, String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
         if (targetPlayer == null) {
-            commandSender.sendMessage("This player doesn't exist");
+            commandSender.sendMessage(MessageBuilder.getMessage("This player doesn't exist", MessageBuilder.MessageLevel.WARNING));
             return;
         }
 
         boolean hardcoreStatus = ToggleHardcore.checkHardcoreStatus(targetPlayer);
         ToggleHardcore.setHardcoreStatus(targetPlayer, !hardcoreStatus);
 
-        commandSender.sendMessage(playerName + "'s hardcore status was set to: " + !hardcoreStatus);
+        commandSender.sendMessage(MessageBuilder.getMessage(playerName + "'s hardcore status was set to: " + !hardcoreStatus, MessageBuilder.MessageLevel.INFO));
     }
 
     private void sendHardcoreStatus(CommandSender commandSender, String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
         if (targetPlayer == null) {
-            commandSender.sendMessage("This player doesn't exist");
+            commandSender.sendMessage(MessageBuilder.getMessage("This player doesn't exist", MessageBuilder.MessageLevel.WARNING));
             return;
         }
 
         boolean hardcoreStatus = ToggleHardcore.checkHardcoreStatus(targetPlayer);
-        commandSender.sendMessage(playerName + "'s hardcore status: " + hardcoreStatus);
+        commandSender.sendMessage(MessageBuilder.getMessage(playerName + "'s hardcore status: " + hardcoreStatus, MessageBuilder.MessageLevel.INFO));
     }
 }

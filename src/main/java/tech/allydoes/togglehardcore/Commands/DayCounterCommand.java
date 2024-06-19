@@ -20,9 +20,7 @@ public class DayCounterCommand implements CommandExecutor {
             timeSinceDeath /= 1000; // Seconds
             timeSinceDeath /= 60; // Mins
             timeSinceDeath /= 20; // (20 Mins) Minecraft Days
-
-            Math.floor(timeSinceDeath);
-            commandSender.sendMessage("You've survived " + timeSinceDeath + " Days!");
+            commandSender.sendMessage("You've survived " + (double) timeSinceDeath + " Days!");
         } else {
             commandSender.sendMessage("You aren't in hardcore mode");
         }
