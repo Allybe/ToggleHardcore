@@ -12,3 +12,7 @@ commands:
     description: Admin command for managing players' hardcore mode
     usage: /hardcore
     permission: ToggleHardcore.admin
+  dayCounter:
+    description: Gets the amount of in-game days that you've being alive
+    usage: /daycounter
+    permission: ToggleHardcore.dayCounter
