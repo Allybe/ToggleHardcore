@@ -11,11 +11,11 @@ public class AdminCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String commandName, String[] args) {
         if (commandSender.hasPermission("ToggleHardcore.admin") && args.length >= 2) {
-            switch(args[0]) {
+            switch(args[0].toLowerCase()) {
                 case "toggle":
                     toggleHardcore(commandSender, args[1]);
                     break;
-                case "check":
+                case "status":
                     sendHardcoreStatus(commandSender, args[1]);
                     break;
                  default:
@@ -27,28 +27,27 @@ public class AdminCommand implements CommandExecutor {
         return true;
     }
 
-    public void toggleHardcore(CommandSender commandSender, String playerName) {
+    private void toggleHardcore(CommandSender commandSender, String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
         if (targetPlayer == null) {
             commandSender.sendMessage("This player doesn't exist");
             return;
         }
 
-        boolean hardcoreStatus = ToggleHardcore.CheckHardcoreStatus(targetPlayer);
-        ToggleHardcore.SetHardcoreStatus(targetPlayer, !hardcoreStatus);
+        boolean hardcoreStatus = ToggleHardcore.checkHardcoreStatus(targetPlayer);
+        ToggleHardcore.setHardcoreStatus(targetPlayer, !hardcoreStatus);
 
-        targetPlayer.removeResourcePacks();
-        commandSender.sendMessage(playerName + "'s hardcore status was set to: " + hardcoreStatus);
+        commandSender.sendMessage(playerName + "'s hardcore status was set to: " + !hardcoreStatus);
     }
 
-    public void sendHardcoreStatus(CommandSender commandSender, String playerName) {
+    private void sendHardcoreStatus(CommandSender commandSender, String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
         if (targetPlayer == null) {
             commandSender.sendMessage("This player doesn't exist");
             return;
         }
 
-        boolean hardcoreStatus = ToggleHardcore.CheckHardcoreStatus(targetPlayer);
+        boolean hardcoreStatus = ToggleHardcore.checkHardcoreStatus(targetPlayer);
         commandSender.sendMessage(playerName + "'s hardcore status: " + hardcoreStatus);
     }
 }

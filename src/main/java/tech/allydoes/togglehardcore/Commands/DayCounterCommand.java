@@ -7,8 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tech.allydoes.togglehardcore.ToggleHardcore;
 
-import java.util.logging.Level;
-
 public class DayCounterCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String commandName, String[] args) {
@@ -17,7 +15,7 @@ public class DayCounterCommand implements CommandExecutor {
             return true;
         }
 
-        if (ToggleHardcore.CheckHardcoreStatus(player)) {
+        if (ToggleHardcore.checkHardcoreStatus(player)) {
             int timeSinceDeath = player.getStatistic(Statistic.TIME_SINCE_DEATH);
             timeSinceDeath /= 1000; // Seconds
             timeSinceDeath /= 60; // Mins

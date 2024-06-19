@@ -14,7 +14,7 @@ public class OnPlayerDeath implements Listener {
     public void PlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
-        if (ToggleHardcore.CheckHardcoreStatus(player)) {
+        if (ToggleHardcore.checkHardcoreStatus(player)) {
             Calendar calendar = Calendar.getInstance();
             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
             int daysTillSunday = Calendar.SUNDAY - dayOfWeek;

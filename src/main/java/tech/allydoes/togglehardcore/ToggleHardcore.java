@@ -10,9 +10,9 @@ import tech.allydoes.togglehardcore.Commands.DayCounterCommand;
 import tech.allydoes.togglehardcore.Commands.ToggleCommand;
 import tech.allydoes.togglehardcore.Events.OnPlayerDeath;
 import tech.allydoes.togglehardcore.Events.OnPlayerJoin;
+import tech.allydoes.togglehardcore.TabCompleters.AdminCommandTabCompleter;
 
-import javax.naming.Name;
-import javax.xml.stream.events.Namespace;
+import java.util.HexFormat;
 import java.util.logging.Level;
 
 public final class ToggleHardcore extends JavaPlugin {
@@ -24,6 +24,7 @@ public final class ToggleHardcore extends JavaPlugin {
         plugin = this;
         this.getCommand("toggleHardcore").setExecutor(new ToggleCommand());
         this.getCommand("hardcore").setExecutor(new AdminCommand());
+        this.getCommand("hardcore").setTabCompleter(new AdminCommandTabCompleter());
         this.getCommand("dayCounter").setExecutor(new DayCounterCommand());
 
         if (getServer().isHardcore()) {
@@ -39,7 +40,7 @@ public final class ToggleHardcore extends JavaPlugin {
         this.getLogger().log(Level.FINE, "bye, bye!");
     }
 
-    public static boolean CheckHardcoreStatus(Player player) {
+    public static boolean checkHardcoreStatus(Player player) {
         boolean isHardcore = false;
         NamespacedKey key = new NamespacedKey(ToggleHardcore.getPlugin(), "isHardcore");
         if (player.getPersistentDataContainer().has(key)) {
@@ -49,13 +50,22 @@ public final class ToggleHardcore extends JavaPlugin {
         return isHardcore;
     }
 
-    public static void SetHardcoreStatus(Player player, boolean status) {
+    public static void setHardcoreStatus(Player player, boolean status) {
         NamespacedKey isHardcoreKey = new NamespacedKey(ToggleHardcore.getPlugin(), "isHardcore");
         player.getPersistentDataContainer().set(isHardcoreKey, PersistentDataType.BOOLEAN, status);
 
         if (status) {
             player.setStatistic(Statistic.TIME_SINCE_DEATH, 0);
+            setHardcoreResourcePack(player);
+        } else {
+            player.removeResourcePacks();
         }
+    }
+
+    public static void setHardcoreResourcePack(Player player) {
+        player.setResourcePack("https://dl.dropboxusercontent.com/scl/fi/fzh1w48rg3xjrgwqox9dw/HardcoreHearts.zip?rlkey=dnusltejyys21x89yfmxgy4c4&st=sgvdzey6&dl=0",
+                HexFormat.of().parseHex("F2A1E227D1036FD1F4AA5F984F14BF20128DEFC5"),
+                "This resource pack is needed if you want hardcore hearts.");
     }
 
     public static ToggleHardcore getPlugin() {
