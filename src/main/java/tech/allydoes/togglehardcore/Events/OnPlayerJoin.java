@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.geysermc.api.Geyser;
+import org.geysermc.api.connection.Connection;
+
 import tech.allydoes.togglehardcore.ToggleHardcore;
 
 public class OnPlayerJoin implements Listener {

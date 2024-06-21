@@ -1,10 +1,17 @@
 package tech.allydoes.togglehardcore;
 
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.geysermc.geyser.api.GeyserApi;
+import org.geysermc.geyser.api.event.EventRegistrar;
+import org.geysermc.geyser.api.event.bedrock.SessionLoadResourcePacksEvent;
+import org.geysermc.geyser.api.pack.PackCodec;
+import org.geysermc.geyser.api.pack.ResourcePack;
+
 import tech.allydoes.togglehardcore.Commands.AdminCommand;
 import tech.allydoes.togglehardcore.Commands.DayCounterCommand;
 import tech.allydoes.togglehardcore.Commands.ToggleCommand;
@@ -15,9 +22,10 @@ import tech.allydoes.togglehardcore.TabCompleters.AdminCommandTabCompleter;
 import java.util.HexFormat;
 import java.util.logging.Level;
 
-public final class ToggleHardcore extends JavaPlugin {
+public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
 
     private static ToggleHardcore plugin;
+    private static ResourcePack pack;
 
     @Override
     public void onEnable() {
@@ -33,11 +41,25 @@ public final class ToggleHardcore extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
+
+        getLogger().info("Registering Geyser event bus!");
+        Path bedrockResourcePackPath = new Path();
+
+        GeyserApi.api().eventBus().register(this, this);
+        pack = ResourcePack.create(PackCodec.path(bedrockResourcePackPath));
     }
 
     @Override
     public void onDisable() {
         this.getLogger().log(Level.FINE, "bye, bye!");
+    }
+
+    public void onSessionLoadResourcePacksEvent(SessionLoadResourcePacksEvent event) {
+        Player player = Bukkit.getPlayer(event.connection().javaUuid());
+
+        if (ToggleHardcore.checkHardcoreStatus(player)) {
+            event.register(pack);
+        }
     }
 
     public static boolean checkHardcoreStatus(Player player) {

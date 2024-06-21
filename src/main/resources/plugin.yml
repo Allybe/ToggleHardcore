@@ -2,6 +2,7 @@ name: ToggleHardcore
 version: '${version}'
 authors: [Allison]
 main: tech.allydoes.togglehardcore.ToggleHardcore
+depend: ["Geyser-Spigot"]
 api-version: '1.21'
 commands:
   toggleHardcore:
