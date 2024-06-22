@@ -6,6 +6,7 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.geysermc.api.Geyser;
 import org.geysermc.geyser.api.GeyserApi;
 import org.geysermc.geyser.api.event.EventRegistrar;
 import org.geysermc.geyser.api.event.bedrock.SessionLoadResourcePacksEvent;
@@ -18,9 +19,13 @@ import tech.allydoes.togglehardcore.Commands.ToggleCommand;
 import tech.allydoes.togglehardcore.Events.OnPlayerDeath;
 import tech.allydoes.togglehardcore.Events.OnPlayerJoin;
 import tech.allydoes.togglehardcore.TabCompleters.AdminCommandTabCompleter;
+import tech.allydoes.togglehardcore.Text.MessageBuilder;
+import tech.allydoes.togglehardcore.Text.MessageBuilder.MessageLevel;
 
 import java.util.HexFormat;
 import java.util.logging.Level;
+import java.io.File;
+import java.nio.file.Path;
 
 public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
 
@@ -43,7 +48,7 @@ public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
         getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
 
         getLogger().info("Registering Geyser event bus!");
-        Path bedrockResourcePackPath = new Path();
+        Path bedrockResourcePackPath = new File("").toPath();
 
         GeyserApi.api().eventBus().register(this, this);
         pack = ResourcePack.create(PackCodec.path(bedrockResourcePackPath));
@@ -85,6 +90,11 @@ public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
     }
 
     public static void setHardcoreResourcePack(Player player) {
+        if (Geyser.api().isBedrockPlayer(player.getUniqueId())) {
+            player.sendMessage(MessageBuilder().getMessage("You must relog to apply changes.", MessageLevel.WARNING))
+            return;
+        }
+
         player.setResourcePack("https://dl.dropboxusercontent.com/scl/fi/fzh1w48rg3xjrgwqox9dw/HardcoreHearts.zip?rlkey=dnusltejyys21x89yfmxgy4c4&st=sgvdzey6&dl=0",
                 HexFormat.of().parseHex("F2A1E227D1036FD1F4AA5F984F14BF20128DEFC5"),
                 "This resource pack is needed if you want hardcore hearts.");
