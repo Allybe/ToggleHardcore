@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.geysermc.api.Geyser;
 import tech.allydoes.togglehardcore.Text.MessageBuilder;
 import tech.allydoes.togglehardcore.ToggleHardcore;
 
@@ -23,6 +24,10 @@ public class ToggleCommand implements CommandExecutor {
         ToggleHardcore.setHardcoreStatus(player, true);
         ToggleHardcore.setHardcoreResourcePack(player);
         sender.sendMessage(MessageBuilder.getMessage("You are now in hardcore, good luck!", MessageBuilder.MessageLevel.INFO));
+
+        if (Geyser.api().isBedrockPlayer(player.getUniqueId())) {
+            player.sendMessage(MessageBuilder.getMessage("You must relog to apply changes.", MessageBuilder.MessageLevel.WARNING));
+        }
 
         return true;
     }

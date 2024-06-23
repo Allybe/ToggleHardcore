@@ -6,7 +6,7 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.geysermc.api.Geyser;
+import org.geysermc.event.subscribe.Subscribe;
 import org.geysermc.geyser.api.GeyserApi;
 import org.geysermc.geyser.api.event.EventRegistrar;
 import org.geysermc.geyser.api.event.bedrock.SessionLoadResourcePacksEvent;
@@ -19,15 +19,17 @@ import tech.allydoes.togglehardcore.Commands.ToggleCommand;
 import tech.allydoes.togglehardcore.Events.OnPlayerDeath;
 import tech.allydoes.togglehardcore.Events.OnPlayerJoin;
 import tech.allydoes.togglehardcore.TabCompleters.AdminCommandTabCompleter;
-import tech.allydoes.togglehardcore.Text.MessageBuilder;
-import tech.allydoes.togglehardcore.Text.MessageBuilder.MessageLevel;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HexFormat;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
-public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
+public final class ToggleHardcore extends JavaPlugin implements EventRegistrar {
 
     private static ToggleHardcore plugin;
     private static ResourcePack pack;
@@ -47,10 +49,12 @@ public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
         getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
 
-        getLogger().info("Registering Geyser event bus!");
-        Path bedrockResourcePackPath = new File("").toPath();
+        performChecks();
 
+        Path bedrockResourcePackPath = new File(getDataFolder(), "bedrock_hearts.zip").toPath();
+        getLogger().info("Registering Geyser event bus!");
         GeyserApi.api().eventBus().register(this, this);
+        GeyserApi.api().eventBus().subscribe(this, SessionLoadResourcePacksEvent.class, this::onSessionLoadResourcePacksEvent);
         pack = ResourcePack.create(PackCodec.path(bedrockResourcePackPath));
     }
 
@@ -59,12 +63,33 @@ public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
         this.getLogger().log(Level.FINE, "bye, bye!");
     }
 
-    public void onSessionLoadResourcePacksEvent(SessionLoadResourcePacksEvent event) {
-        Player player = Bukkit.getPlayer(event.connection().javaUuid());
-
-        if (ToggleHardcore.checkHardcoreStatus(player)) {
-            event.register(pack);
+    private void performChecks() {
+        if (!Files.exists(getDataFolder().toPath())) {
+            try {
+                System.out.println(getDataFolder().toPath());
+                Files.createDirectory(getDataFolder().toPath());
+                Files.copy(
+                        Objects.requireNonNull(getResource("bedrock_hearts.zip")),
+                        getDataFolder().toPath().resolve("bedrock_hearts.zip")
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+        if (!Files.exists(getDataFolder().toPath().resolve("bedrock_hearts.zip"))) {
+            try {
+                Files.copy(
+                        Objects.requireNonNull(getResource("bedrock_hearts.zip")),
+                        getDataFolder().toPath().resolve("bedrock_hearts.zip")
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void onSessionLoadResourcePacksEvent(SessionLoadResourcePacksEvent event) {
+        //TODO: get texture pack to only send to hardcore players
     }
 
     public static boolean checkHardcoreStatus(Player player) {
@@ -90,11 +115,6 @@ public final class ToggleHardcore extends JavaPlugin implements EventRegistrar{
     }
 
     public static void setHardcoreResourcePack(Player player) {
-        if (Geyser.api().isBedrockPlayer(player.getUniqueId())) {
-            player.sendMessage(MessageBuilder().getMessage("You must relog to apply changes.", MessageLevel.WARNING))
-            return;
-        }
-
         player.setResourcePack("https://dl.dropboxusercontent.com/scl/fi/fzh1w48rg3xjrgwqox9dw/HardcoreHearts.zip?rlkey=dnusltejyys21x89yfmxgy4c4&st=sgvdzey6&dl=0",
                 HexFormat.of().parseHex("F2A1E227D1036FD1F4AA5F984F14BF20128DEFC5"),
                 "This resource pack is needed if you want hardcore hearts.");

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'tech.allydoes'
-version = '0.2.2'
+version = '0.2.2-BEDROCK'
 
 repositories {
     mavenCentral()
