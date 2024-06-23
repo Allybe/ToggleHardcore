@@ -20,7 +20,7 @@ public class AdminCommand implements CommandExecutor {
                     sendHardcoreStatus(commandSender, args[1]);
                     break;
                  default:
-                     commandSender.sendMessage(MessageBuilder.getMessage("This player doesn't exist", MessageBuilder.MessageLevel.WARNING));
+                     commandSender.sendMessage(MessageBuilder.getMessage("This command doesn't exist", MessageBuilder.MessageLevel.WARNING));
                     break;
             }
         }
