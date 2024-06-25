@@ -5,6 +5,8 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.common.reflection.qual.GetClass;
+
 import tech.allydoes.togglehardcore.Commands.AdminCommand;
 import tech.allydoes.togglehardcore.Commands.DayCounterCommand;
 import tech.allydoes.togglehardcore.Commands.ToggleCommand;
@@ -63,7 +65,7 @@ public final class ToggleHardcore extends JavaPlugin {
     }
 
     public static void setHardcoreResourcePack(Player player) {
-        player.setResourcePack("https://dl.dropboxusercontent.com/scl/fi/fzh1w48rg3xjrgwqox9dw/HardcoreHearts.zip?rlkey=dnusltejyys21x89yfmxgy4c4&st=sgvdzey6&dl=0",
+        player.setResourcePack(getPlugin().getClassLoader().getResource("HardcoreHearts.zip").toString(),
                 HexFormat.of().parseHex("F2A1E227D1036FD1F4AA5F984F14BF20128DEFC5"),
                 "This resource pack is needed if you want hardcore hearts.");
     }

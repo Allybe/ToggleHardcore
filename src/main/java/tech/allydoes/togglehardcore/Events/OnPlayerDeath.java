@@ -25,7 +25,7 @@ public class OnPlayerDeath implements Listener {
 
             calendar.add(Calendar.DAY_OF_WEEK, daysTillSunday);
             player.getInventory().clear();
-            player.ban("You have been banned :(", calendar.getTime(), "Death", true);
+            player.ban("You died.", calendar.getTime(), "Death", true);
         }
     }
 }
