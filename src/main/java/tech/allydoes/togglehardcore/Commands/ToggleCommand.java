@@ -21,8 +21,7 @@ public class ToggleCommand implements CommandExecutor {
         }
 
         ToggleHardcore.setHardcoreStatus(player, true);
-        ToggleHardcore.setHardcoreResourcePack(player);
-        sender.sendMessage(MessageBuilder.getMessage("You are now in hardcore, good luck!", MessageBuilder.MessageLevel.INFO));
+        sender.sendMessage(MessageBuilder.getMessage("You must relog to completely apply changes, good luck!", MessageBuilder.MessageLevel.WARNING));
 
         return true;
     }

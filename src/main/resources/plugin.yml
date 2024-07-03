@@ -2,6 +2,7 @@ name: ToggleHardcore
 version: '${version}'
 authors: [Allison]
 main: tech.allydoes.togglehardcore.ToggleHardcore
+depend: [ ProtocolLib ]
 api-version: '1.21'
 commands:
   toggleHardcore:
