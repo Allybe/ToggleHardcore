@@ -18,10 +18,14 @@ repositories {
     maven {
         url = uri("https://repo.opencollab.dev/main/")
     }
+    maven { 
+        url =  uri("https://repo.dmulloy2.net/repository/public/") 
+    }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT"
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
 }
 
 def targetJavaVersion = 21

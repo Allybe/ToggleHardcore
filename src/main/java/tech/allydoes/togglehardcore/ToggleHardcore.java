@@ -5,7 +5,14 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.common.reflection.qual.GetClass;
+
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLib;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
 
 import tech.allydoes.togglehardcore.Commands.AdminCommand;
 import tech.allydoes.togglehardcore.Commands.DayCounterCommand;
@@ -14,12 +21,19 @@ import tech.allydoes.togglehardcore.Events.OnPlayerDeath;
 import tech.allydoes.togglehardcore.Events.OnPlayerJoin;
 import tech.allydoes.togglehardcore.TabCompleters.AdminCommandTabCompleter;
 
+import java.util.ArrayList;
 import java.util.HexFormat;
 import java.util.logging.Level;
 
 public final class ToggleHardcore extends JavaPlugin {
 
     private static ToggleHardcore plugin;
+
+    private ProtocolManager protocolManager;
+
+    public void onLoad() {
+        protocolManager = ProtocolLibrary.getProtocolManager();
+    }
 
     @Override
     public void onEnable() {
@@ -35,6 +49,20 @@ public final class ToggleHardcore extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new OnPlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
+
+        protocolManager.addPacketListener(new PacketAdapter(
+            this,
+            PacketType.Play.Server.LOGIN
+        ) {
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                PacketContainer packet = event.getPacket();
+                packet.
+                if (checkHardcoreStatus(event.getPlayer())) {
+                    
+                }
+            }
+        });
     }
 
     @Override
@@ -62,6 +90,8 @@ public final class ToggleHardcore extends JavaPlugin {
         } else {
             player.removeResourcePacks();
         }
+        
+
     }
 
     public static void setHardcoreResourcePack(Player player) {
