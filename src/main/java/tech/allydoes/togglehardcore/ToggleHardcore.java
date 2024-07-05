@@ -1,6 +1,10 @@
 package tech.allydoes.togglehardcore;
 
 import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.injector.temporary.MinimalInjector;
+import com.comphenix.protocol.injector.temporary.TemporaryPlayer;
+import com.comphenix.protocol.injector.temporary.TemporaryPlayerFactory;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
@@ -49,7 +53,7 @@ public final class ToggleHardcore extends JavaPlugin {
 
         protocolManager.addPacketListener(new PacketAdapter(
             this,
-            ListenerPriority.HIGH,
+            ListenerPriority.NORMAL,
             PacketType.Play.Server.LOGIN
         ) {
             @Override
@@ -57,8 +61,17 @@ public final class ToggleHardcore extends JavaPlugin {
                 var fields = event.getPacket().getModifier().getFields();
                 for (int i = 0; i < fields.size(); i++) {
                     var field = fields.get(i).getField();
-                    if (field.getName() == "hardcore" && checkHardcoreStatus(event.getPlayer())) {
-                        event.getPacket().getModifier().write(i, true);
+                    if (field.getName() == "hardcore") {
+                        Player player;
+                        if (event.isPlayerTemporary()) {
+                            getLogger().log(Level.INFO, "Temp player received");
+                            //MinimalInjector injector = TemporaryPlayerFactory.getInjectorFromPlayer(event.getPlayer());
+                            return;
+                        } else {
+                            player = event.getPlayer();
+                        }
+
+                        event.getPacket().getModifier().write(i, checkHardcoreStatus(player));
                     }
                 }
             }
