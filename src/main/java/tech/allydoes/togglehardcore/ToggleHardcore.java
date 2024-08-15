@@ -65,7 +65,6 @@ public final class ToggleHardcore extends JavaPlugin {
                         Player player;
                         if (event.isPlayerTemporary()) {
                             getLogger().log(Level.INFO, "Temp player received");
-                            //MinimalInjector injector = TemporaryPlayerFactory.getInjectorFromPlayer(event.getPlayer());
                             return;
                         } else {
                             player = event.getPlayer();
